@@ -18,8 +18,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_superuser = models.BooleanField(default=False)
     is_premium = models.BooleanField(default=False)
     creation_date = models.DateTimeField(default=timezone.now())
-    update_date = models.DateField(default=timezone.now())
-    last_request = models.DateField(default=timezone.now())
+    update_date = models.DateTimeField(default=timezone.now())
+    last_request = models.DateTimeField(default=timezone.now())
 
     objects = MyUserManager() 
 
