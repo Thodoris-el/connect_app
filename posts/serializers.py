@@ -31,6 +31,6 @@ class ViewSerializer(serializers.ModelSerializer):
         fields = ('post_id', 'user_id')
 
     def create(self, validated_data):
-        like = View.objects.create(user_id= validated_data['user_id'], post_id= validated_data['post_id'])
-        like.save()
-        return like
+        view = View.objects.create(user_id= validated_data['user_id'], post_id= validated_data['post_id'])
+        view.save()
+        return view
