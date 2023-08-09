@@ -17,6 +17,7 @@ class Post(models.Model):
     views = models.IntegerField(default=0, blank=False, null=False)
     likes = models.IntegerField(default=0, blank=False, null=False)
     is_active = models.BooleanField(default=True)
+    key_words = models.TextField(max_length=1000, default="")
 
     def save(self, *args, **kwargs):
         super(Post, self).save(*args, **kwargs)

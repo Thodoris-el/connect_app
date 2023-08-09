@@ -6,7 +6,7 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta(object):
         model = Post
-        fields = ('id', 'title', 'description', 'location', 'time','user','date_posted','date_updated','number_of_submits','views', 'likes', 'is_active')
+        fields = ('id', 'title', 'description', 'location', 'time','user','date_posted','date_updated','number_of_submits','views', 'likes', 'is_active', 'key_words')
 
         def create(self, validated_data):
              post = Post.objects.create(title= validated_data['title'])

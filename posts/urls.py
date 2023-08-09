@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import CreatePostAPIView, FinaAllView, FindByIdView, FindByUserView, LikePostView, DislikePostView, Top100View, FindByDateView, FindByLocationView
+from .views import CreatePostAPIView, FinaAllView, FindByIdView, FindByUserView, LikePostView, DislikePostView, Top100View, FindByDateView, FindByLocationView, FindPostCustom
 
 urlpatterns = [
     path('create/', CreatePostAPIView.as_view(), name="create"),
@@ -11,4 +11,5 @@ urlpatterns = [
     path('top100/', Top100View.as_view(), name="top 100 posts"),
     path('finddate/', FindByDateView.as_view(), name="find by date"),
     path('findlocation/', FindByLocationView.as_view(), name="find by location"),
+    path('findcustom/', FindPostCustom.as_view(), name="find by custom search"),
 ]

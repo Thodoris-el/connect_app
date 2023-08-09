@@ -131,3 +131,18 @@ class Top100View(APIView):
         if not posts:
             return Response({'no posts found'}, status=status.HTTP_404_NOT_FOUND)
         return Response(PostSerializer(posts, many=True).data, status=status.HTTP_200_OK)
+
+class FindPostCustom(APIView):
+    permission_classes = (AllowAny,)
+    def get(self,request):
+        posts = Post.objects.all()
+
+        if 'start_date' in request.data:
+            posts = posts.filter(time__gt=request.data['start_date'])
+        if 'end_date' in request.data:
+            posts = posts.filter(time__lt=request.data['end_date'])
+        if 'location' in request.data:
+            posts = posts.filter(location=request.data['location'])
+        if 'keywords' in request.data:
+            posts = posts.filter(keywords=request.data['keywords'])
+        return Response(PostSerializer(posts,many=True).data, status=status.HTTP_200_OK)
