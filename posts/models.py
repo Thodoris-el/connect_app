@@ -16,7 +16,24 @@ class Post(models.Model):
     number_of_submits = models.IntegerField(default=0, blank=False, null=False)
     views = models.IntegerField(default=0, blank=False, null=False)
     likes = models.IntegerField(default=0, blank=False, null=False)
+    is_active = models.BooleanField(default=True)
 
     def save(self, *args, **kwargs):
         super(Post, self).save(*args, **kwargs)
+        return self
+    
+class Like(models.Model):
+    post_id = models.UUIDField(null=False, blank=False)
+    user_id = models.UUIDField(null=False, blank=False)
+
+    def save(self, *args, **kwargs):
+        super(Like, self).save(*args, **kwargs)
+        return self
+
+class View(models.Model):
+    post_id = models.UUIDField(null=False, blank=False)
+    user_id = models.UUIDField(null=False, blank=False)
+
+    def save(self, *args, **kwargs):
+        super(View, self).save(*args, **kwargs)
         return self
