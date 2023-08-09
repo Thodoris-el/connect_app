@@ -5,7 +5,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
 from django.contrib.auth.hashers import make_password
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, exceptions
 from django.utils import timezone
 from datetime import date
 
@@ -71,3 +71,80 @@ class SearchCustom(APIView):
         if 'categories' in data:
             user = user.filter(favorites__contains=data['categories'])
         return Response(UserSerializer(user, many=True).data, status=status.HTTP_200_OK)
+
+class LoginView(APIView):
+    permission_classes = (AllowAny,)
+    def post(self,request):
+        User = get_user_model()
+        try:
+            email = request.data['email']
+            password = request.data['password']
+        except:
+             raise exceptions.AuthenticationFailed('password and email required')
+        if email is None or password is None:
+            raise exceptions.AuthenticationFailed('password and email required')
+        user = User.objects.filter(email=email).first()
+        if user is None :
+            raise exceptions.AuthenticationFailed('user not found')
+        if not user.check_password(password):
+            raise exceptions.AuthenticationFailed('wrong password')
+        user.last_login = timezone.now()
+        user.last_request = timezone.now()
+        user.save()
+        return Response(UserSerializer(user).data, status=status.HTTP_200_OK)
+
+class UpdateView(APIView):
+    def post(self, request):
+        permission_classes = (AllowAny,)
+        email = ''
+        try:
+            email = request.data['email']
+        except:
+            raise exceptions.AuthenticationFailed('email required')
+        user = User.objects.all().filter(email=email).first()
+        if not user:
+            raise exceptions.AuthenticationFailed('user not found')
+        if 'first_name' in request.data:
+            user.first_name = request.data['first_name']
+        if 'last_name' in request.data:
+            user.last_name = request.data['last_name']
+        if 'birthday' in request.data:
+            user.birthday = request.data['birthday']
+        if 'description' in request.data:
+            user.description = request.data['description']
+        if 'favorites' in request.data:
+            user.favorites = request.data['favorites']
+        user.last_request = timezone.now()
+        user.update_date = timezone.now()
+        user.save()
+        return Response(UserSerializer(user).data, status=status.HTTP_200_OK)
+
+class DeleteView(APIView):
+    def post(self,request):
+        permission_classes = (AllowAny,)
+        email = ''
+        try:
+            email = request.data['email']
+        except:
+            raise exceptions.AuthenticationFailed('email required')
+        user = User.objects.all().filter(email=email).first()
+        if not user:
+            raise exceptions.AuthenticationFailed('user not found')
+        user.is_active = False
+        user.save()
+        return Response(UserSerializer(user).data, status=status.HTTP_200_OK)
+
+class EnableView(APIView):
+    def post(self,request):
+        permission_classes = (AllowAny,)
+        email = ''
+        try:
+            email = request.data['email']
+        except:
+            raise exceptions.AuthenticationFailed('email required')
+        user = User.objects.all().filter(email=email).first()
+        if not user:
+            raise exceptions.AuthenticationFailed('user not found')
+        user.is_active = True
+        user.save()
+        return Response(UserSerializer(user).data, status=status.HTTP_200_OK)
