@@ -18,6 +18,7 @@ class Post(models.Model):
     likes = models.IntegerField(default=0, blank=False, null=False)
     is_active = models.BooleanField(default=True)
     key_words = models.TextField(max_length=1000, default="")
+    image_url = models.TextField(max_length=500, default="")
 
     def save(self, *args, **kwargs):
         super(Post, self).save(*args, **kwargs)
@@ -38,3 +39,9 @@ class View(models.Model):
     def save(self, *args, **kwargs):
         super(View, self).save(*args, **kwargs)
         return self
+
+class Submit(models.Model):
+    post_id = models.UUIDField(null=False, blank=False)
+    user_id = models.UUIDField(null=False, blank=False)
+    is_active = models.BooleanField(default=True)
+    date_submited = models.DateTimeField(default=timezone.now(), null=False, blank=False)
