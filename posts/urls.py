@@ -12,5 +12,6 @@ urlpatterns = [
     path('finddate/', FindByDateView.as_view(), name="find by date"),
     path('findlocation/', FindByLocationView.as_view(), name="find by location"),
     path('findcustom/', FindPostCustom.as_view(), name="find by custom search"),
+    path('submitpost/', SubmitView.as_view(), name="submit post"),
     path('cancelsubmit/', CancelSubmit.as_view(), name="cancel submit"),
 ]
