@@ -9,3 +9,6 @@ tzdata==2023.3
 djangorestframework_simplejwt==5.2.2
 djangorestframework-jwt==1.11.0
 django-environ==0.10.0
+channels==4.0.0
+channels_redis==4.0.0
+daphne==4.0.0

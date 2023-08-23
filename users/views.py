@@ -8,6 +8,7 @@ from rest_framework.response import Response
 from rest_framework import status, exceptions
 from django.utils import timezone
 from datetime import date
+from django.contrib.auth import authenticate, login, logout
 
 # Create your views here.
 User = get_user_model()
@@ -88,9 +89,13 @@ class LoginView(APIView):
             raise exceptions.AuthenticationFailed('user not found')
         if not user.check_password(password):
             raise exceptions.AuthenticationFailed('wrong password')
+        if not user.is_active:
+            raise exceptions.AuthenticationFailed('not active user')
+        login(request,user)
         user.last_login = timezone.now()
         user.last_request = timezone.now()
         user.save()
+
         return Response(UserSerializer(user).data, status=status.HTTP_200_OK)
 
 class UpdateView(APIView):

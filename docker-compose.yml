@@ -32,6 +32,10 @@ services:
       - "8080:80"
     volumes:
      - pgadmin-data:/var/lib/pgadmin
+  redis:
+    image: redis:5
+    ports:
+      - "6379:6379"
 
 volumes:
   postgres_data: 
