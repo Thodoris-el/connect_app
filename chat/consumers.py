@@ -4,6 +4,7 @@ from channels.generic.websocket import WebsocketConsumer
 from .models import Room, Message
 from users.models import User
 from rest_framework import exceptions
+from .serializer import MessageSerializer
 
 class ChatConsumer(WebsocketConsumer):
 
@@ -74,9 +75,11 @@ class ChatConsumer(WebsocketConsumer):
                 'message': message,
             }
         )
-        print(self.user.id)
         try:
-            Message.objects.create(sender=self.user.id,room=self.room.name,content=message)
+            messageS = MessageSerializer(data={'sender': self.user.id, 'room': self.room.name, 'content': message})
+            messageS.is_valid()
+            messageS.save()
+            #Message.objects.create(sender=self.user.id,room=self.room.name,content=message)
         except:
             raise exceptions.AuthenticationFailed("can't create message")
     

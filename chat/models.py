@@ -17,5 +17,5 @@ class Message(models.Model):
     time_sent = models.DateTimeField(default=timezone.now(), null=False, blank=False)
 
     def save(self, *args, **kwargs):
-        super(Message, self.save(*args, **kwargs))
+        super(Message, self).save(*args, **kwargs)
         return self
